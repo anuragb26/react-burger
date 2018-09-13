@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter} from 'react-router-dom';
 
@@ -15,9 +16,9 @@ import {BrowserRouter} from 'react-router-dom';
 const logger = store => {
     return next => {
         return action => {
-            console.log('Dispatching action',action);
+          //  console.log('Dispatching action',action);
             const result = next(action);
-            console.log('Store current State',store.getState());
+        // console.log('Store current State',store.getState());
             return result;
         }
     }
@@ -26,7 +27,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
     burgerBuilder: burgerBuilderReducer,
-    order: orderReducer
+    order: orderReducer,
+    auth:authReducer
 })
 
 const store = createStore(rootReducer,composeEnhancers(applyMiddleware(logger,thunk)));

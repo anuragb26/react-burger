@@ -9,6 +9,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as burgerBuilderActions from '../../store/actions/burgerBuilder';
+import * as authActions from '../../store/actions/auth';
 
 // const INGREDIENT_PRICES = {
 //     salad: 0.5,
@@ -37,7 +38,13 @@ class BurgerBuilder extends Component{
     }
     
     purchaseHandler = ()=>{
-        this.setState({purchasing:true})
+        if(this.props.isAuthenticated){
+            this.setState({purchasing:true})
+        }
+        else{
+            this.props.onSetAuthRedirectpath('/checkout');
+            this.props.history.push('/auth');
+        }
     }
     
     purchaseCancelHandler = () => {
@@ -80,6 +87,7 @@ class BurgerBuilder extends Component{
                             price = {this.props.price}
                             purchasable = {this.updatePurchaseState(this.props.ings)}
                             ordered = {this.purchaseHandler}
+                            isAuth = {this.props.isAuthenticated}
                         />
                     </Aux>);
             orderSummary = <OrderSummary   ingredients = {this.props.ings}
@@ -104,13 +112,15 @@ class BurgerBuilder extends Component{
 const mapStateToProps = state => ({
     ings:state.burgerBuilder.ingredients,
     price:state.burgerBuilder.totalPrice,
-    error:state.burgerBuilder.error
+    error:state.burgerBuilder.error,
+    isAuthenticated:state.auth.token!==null
 })
 
 const mapDispatchToProps = dispatch => ({
     onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
     onIngredientRemoved:(ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
-    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
+    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
+    onSetAuthRedirectpath: (path) => dispatch(authActions.setAuthRedirectPath(path))
 })
 
 
