@@ -14,7 +14,7 @@ class Orders extends Component {
     }
     componentWillMount(){
         if(!this.props.token){
-           this.props.history.push('/');
+   //         this.props.history.push('/');
         }
     }
     
@@ -24,6 +24,7 @@ class Orders extends Component {
     
 
     render() {
+        console.debug('in orders');
         let orders =<Spinner />
         if(!this.props.loading){
             orders = this.props.orders.map(order => (<Order  key = {order.id}
