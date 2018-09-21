@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
+import * as utilityFunctions from '../../shared/utility'
 import * as actionCreators from '../../store/actions';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
@@ -44,7 +45,7 @@ class Auth extends Component {
     }
 
     componentDidMount(){
-        if(!this.props.buildingBurger && this.props.authRedirectPath == '/checkout'){
+        if(!this.props.buildingBurger && this.props.authRedirectPath === '/checkout'){
             this.props.onSetAuthRedirectPath();
         }
     }
@@ -55,23 +56,7 @@ class Auth extends Component {
             }
         })
     }
-    checkValidity(value,rules){
-        let isValid = true;
-        if(rules.required){
-            isValid = isValid && (value.trim()!=='')
-        }
-        if(rules.minLength){
-            isValid = isValid && value.length >= rules.minLength
-        }
-        if(rules.maxLength){
-            isValid = isValid && value.length <= rules.maxLength
-        }
-        if(rules.isEmail){
-            const pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            isValid = pattern.test(value) && isValid;
-        }
-        return isValid;
-    }
+    
 
     inputChangedHandler = (event,controlName) => {
         const updatedControls = 
@@ -82,7 +67,7 @@ class Auth extends Component {
                                     ...this.state.controls[controlName],
                                     value:event.target.value,
                                     touched:true,
-                                    valid:this.checkValidity(event.target.value,this.state.controls[controlName].validation)
+                                    valid:utilityFunctions.checkValidity(event.target.value,this.state.controls[controlName].validation)
                                 }
         }
         this.setState({controls:updatedControls});

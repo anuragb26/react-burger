@@ -8,15 +8,6 @@ import * as actionCreators from '../../store/actions';
 
 class Orders extends Component {
 
-    constructor(props) {
-        super(props);
-        
-    }
-    componentWillMount(){
-        if(!this.props.token){
-   //         this.props.history.push('/');
-        }
-    }
     
     componentDidMount() {
         this.props.onFetchOrders(this.props.token,this.props.userId);
@@ -24,7 +15,6 @@ class Orders extends Component {
     
 
     render() {
-        console.debug('in orders');
         let orders =<Spinner />
         if(!this.props.loading){
             orders = this.props.orders.map(order => (<Order  key = {order.id}

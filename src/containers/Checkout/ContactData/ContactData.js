@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import axios from '../../../axios-orders';
+import * as utilityFunctions from '../../../shared/utility'
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
@@ -102,7 +103,6 @@ class ContactData extends Component {
         for(let formElementIdentifier in this.state.orderForm){
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
         }
-        console.debug('price',this.props.price);
         const order = {
           ingredients : this.props.ings,
           price : this.props.price,
@@ -113,29 +113,11 @@ class ContactData extends Component {
         
     }
 
-    checkValidity(value,rules){
-            let isValid = true;
-            if(rules.required){
-                isValid = isValid && (value.trim()!=='')
-            }
-            if(rules.minLength){
-                isValid = isValid && value.length >= rules.minLength
-            }
-            if(rules.maxLength){
-                isValid = isValid && value.length <= rules.maxLength
-            }
-            if(rules.isEmail){
-                const pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                isValid = pattern.test(value) && isValid;
-            }
-            
-            return isValid;
-    }
     inputChangedHandler = (event,inputIdentifier) => {
         const updatedOrderForm = {...this.state.orderForm};
         const updatedFormElement = {...updatedOrderForm[inputIdentifier]};
         updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value,updatedFormElement.validation);
+        updatedFormElement.valid = utilityFunctions.checkValidity(updatedFormElement.value,updatedFormElement.validation);
         updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
         let formIsValid = true;

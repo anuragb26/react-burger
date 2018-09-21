@@ -55,7 +55,6 @@ export const auth = (email,password,isSignUp) => {
         }
         axios.post(url,authData)
         .then((response)=> {
-            console.log(response);
             const expirationDate = new Date(new Date().getTime() + response.data.expiresIn* 1000);
             localStorage.setItem('token',response.data.idToken);
             localStorage.setItem('expirationDate',expirationDate);
@@ -79,14 +78,12 @@ export const setAuthRedirectPath = (path) => {
 export const authCheckState = () => {
     return dispatch => {
         const token = localStorage.getItem('token');
-        console.debug('token',token);
         if(!token){
             dispatch(logout());
         }
         else{
             const expirationDate = new Date(localStorage.getItem('expirationDate'));
             const userId = localStorage.getItem('userId');
-            console.debug('seconds left',expirationDate.getSeconds() - new Date().getSeconds());
             if(expirationDate > new Date()){
                 dispatch(authSuccess(token,userId));
                 dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime())/1000))
