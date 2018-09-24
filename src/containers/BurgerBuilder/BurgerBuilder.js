@@ -18,7 +18,7 @@ import * as authActions from '../../store/actions/auth';
 //     bacon: 0.7
 // }
 
-class BurgerBuilder extends Component{
+export class BurgerBuilder extends Component{
     state = {
         purchasing:false
     }
