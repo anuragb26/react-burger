@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom';
 import { connect } from 'react-redux'
 import Order from '../../components/Order/Order/Order'
 import axios from '../../axios-orders'
@@ -20,6 +21,9 @@ class Orders extends Component {
       />
       )
       )
+    }
+    if (orders.length === 0) {
+      orders = (<div style={{ 'width': '50%', 'margin': '0 auto' }}>Please <Link to='/'>build</Link> a burger</div>)
     }
     return (
       <div>
